@@ -2,6 +2,5 @@ Compile: mvn clean install
 Run the application:
 
 mvn jetty:run
-
-or to use java DSL use
-mvn jetty:run -Dimpl=java-dsl
+OR
+mvn tomcat7:run

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="Camel Example Restlet jdbc"
+  name="In Room Guest Dining"
   id="myeclipse.1375917750188"
-  context-root="/camel-example-restlet-jdbc"
+  context-root="/com-inroom-guest-dining"
   j2ee-spec="6.0"
-  archive="Camel Example Restlet jdbc.war">
+  archive="In Room Guest Dining.war">
   <attributes>
     <attribute name="webrootdir" value="src/main/webapp" />
   </attributes>

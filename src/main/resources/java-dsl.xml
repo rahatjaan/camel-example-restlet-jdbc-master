@@ -25,11 +25,19 @@ limitations under the License.
                            http://camel.apache.org/schema/spring/camel-spring.xsd">
 
     <import resource="common.xml" />
-
-    <bean id="testRouteBuilder" class="org.test.router.TestRouteBuilder" />
-
+    <import resource="database.xml" />
+	<bean id="orderBean" class="com.inroom.utils.DataBean"/>
+    <bean id="testRouteBuilder" class="com.inroom.router.TestRouteBuilder" />
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<property name="connectionFactory">
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL" value="vm://localhost" />
+			</bean>
+		</property>
+	</bean>
     <camel:camelContext id="defaultCamelContext">
-        <camel:routeBuilder ref="testRouteBuilder"/>
+    	<camel:propertyPlaceholder id="placeholder" location="classpath:sql.properties" />
+        	<camel:routeBuilder ref="testRouteBuilder"/>
     </camel:camelContext>
 
 </beans>

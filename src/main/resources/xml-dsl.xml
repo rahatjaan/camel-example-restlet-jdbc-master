@@ -33,11 +33,13 @@ limitations under the License.
     <import resource="database.xml" />
 	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
 		<property name="connectionFactory">
-		<bean class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="vm://localhost" />
-		</bean>
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL" value="vm://localhost" />
+			</bean>
 		</property>
 	</bean>
+	
+	<bean id="orderBean" class="com.inroom.utils.DataBean"/>
     <camelContext xmlns="http://camel.apache.org/schema/spring">
     <propertyPlaceholder id="placeholder" location="classpath:sql.properties" />
         <route id="createOrder">
@@ -54,12 +56,10 @@ limitations under the License.
                 </simple>
             </setBody> -->
             <!-- <to uri="jdbc:dataSource"/> -->
-            <multicast stopOnException="true" parallelProcessing="true"
-executorServiceRef="executor">
 		        <to uri="sql:{{sql.selectData}}"/><!-- 
 		        <to uri="file:C:\\"/> -->
+		        <to uri="bean:orderBean?method=processOrder"/>
 		        <!-- <to uri="jms:test"/> -->
-		    </multicast>
             <log message="Selected new Data ${body}">
         	</log>
         </route>

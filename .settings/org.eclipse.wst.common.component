@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="Camel Example Restlet jdbc">
-        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <property name="context-root" value="/camel-example-restlet-jdbc"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
         <property name="java-output-path" value="/Camel Example Restlet jdbc/src/main/webapp/WEB-INF/classes"/>
+        <property name="context-root" value="/com-inroom-guest-dining"/>
     </wb-module>
 </project-modules>

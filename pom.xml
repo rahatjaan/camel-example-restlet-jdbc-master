@@ -20,11 +20,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.apache.camel</groupId>
-    <artifactId>camel-example-restlet-jdbc</artifactId>
+    <groupId>com.inroom.guest.dining</groupId>
+    <artifactId>com-inroom-guest-dining</artifactId>
     <version>2.10-SNAPSHOT</version>
-    <name>Camel Example Restlet jdbc</name>
-    <description>An example using Camel Restlet with jdbc</description>
+    <name>In Room Guest Dining</name>
+    <description>In Room Guest Dining Integration Scenario</description>
     <packaging>war</packaging>
 
     <properties>
@@ -50,6 +50,22 @@
             <artifactId>camel-core</artifactId>
             <version>${camel-version}</version>
         </dependency>
+        <dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.apache.camel</groupId>
+		  <artifactId>camel-ognl</artifactId>
+		  <version>${camel-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.camel</groupId>
+		    <artifactId>camel-mail</artifactId>
+		    <version>${camel-version}</version>
+		    <!-- use the same version as your Camel core version -->
+		</dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jms</artifactId>
