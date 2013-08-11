@@ -32,12 +32,12 @@ limitations under the License.
         <property name="password" value="rahat" />
 </bean>
 
-    <bean class="com.inroom.utils.DatabaseCreation" 
+    <bean class="ige.integration.utils.DatabaseCreation" 
 destroy-method="destroy" id="initDatabase" init-method="create">
         <property name="dataSource" ref="myDataSource">
     </property></bean>
 
-    <bean class="com.inroom.utils.DataBean" id="dataBean">
+    <bean class="ige.integration.utils.DataBean" id="dataBean">
 </bean>
 
     <bean class="org.apache.camel.component.sql.SqlComponent" id="sql">

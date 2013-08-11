@@ -39,10 +39,10 @@ limitations under the License.
 		</property>
 	</bean>
 	
-	<bean id="dataBean" class="com.inroom.utils.DataBean"/>
-    <bean id="myProcessor" class="com.inroom.processes.MyProcessor"/>
-	<bean id="jmsProcessor" class="com.inroom.processes.JMSProcessor"/>
-	<bean id="restProcessor" class="com.inroom.processes.RestProcessor"/>
+	<bean id="dataBean" class="ige.integration.utils.DataBean"/>
+    <bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor"/>
+	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor"/>
+	<bean id="restProcessor" class="ige.integration.processes.RestProcessor"/>
 	
 	<!-- <sslContextParameters id="sslContextParameters">
 	  <trustManagers>
@@ -77,7 +77,7 @@ limitations under the License.
 		                <to uri="restlet:/postOrder?restletMethod=GET"/>
 		            </when>
 		            <otherwise>
-		                <to uri="smtp://smtp.gmail.com:587?username=efficientlydone@gmail.com&amp;password=@deel43672462676760&amp;from=efficientlydone@gmail.com&amp;to=mrseven7seven@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
+		                <to uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
 		                <!-- <to uri="file://C://" /> -->
 		            </otherwise>
 		        </choice>

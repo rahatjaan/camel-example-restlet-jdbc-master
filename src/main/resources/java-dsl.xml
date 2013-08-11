@@ -26,8 +26,8 @@ limitations under the License.
 
     <import resource="common.xml" />
     <import resource="database.xml" />
-	<bean id="orderBean" class="com.inroom.utils.DataBean"/>
-    <bean id="testRouteBuilder" class="com.inroom.router.TestRouteBuilder" />
+	<bean id="orderBean" class="ige.integration.utils.DataBean"/>
+    <bean id="testRouteBuilder" class="ige.integration.router.IntegrationRouteBuilder" />
 	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
 		<property name="connectionFactory">
 			<bean class="org.apache.activemq.ActiveMQConnectionFactory">

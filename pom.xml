@@ -20,15 +20,16 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.inroom.guest.dining</groupId>
-    <artifactId>com-inroom-guest-dining</artifactId>
+    <groupId>ige.integration</groupId>
+    <artifactId>ige-integration</artifactId>
     <version>2.10-SNAPSHOT</version>
-    <name>In Room Guest Dining</name>
-    <description>In Room Guest Dining Integration Scenario</description>
+    <name>IGE Integration Guest Room Dining</name>
+    <description>IGE Integration Guest Room Dining</description>
     <packaging>war</packaging>
 
     <properties>
-        <camel-version>2.10.4</camel-version>
+        <!-- <camel-version>2.10.4</camel-version> -->
+        <camel-version>2.11.1</camel-version>
         <restlet-version>2.0.15</restlet-version>
         <hsqldb-version>2.0.0</hsqldb-version>
         <maven-jetty-plugin-version>6.1.25</maven-jetty-plugin-version>
@@ -50,13 +51,13 @@
             <artifactId>camel-core</artifactId>
             <version>${camel-version}</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-web</artifactId>
             <version>${camel-version}</version>
             <type>war</type>
             <scope>runtime</scope>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-http</artifactId>
