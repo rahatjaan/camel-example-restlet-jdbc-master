@@ -5,6 +5,12 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/test"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+        <dependent-module deploy-path="/" handle="module:/overlay/var/M2_REPO/org/apache/camel/camel-web/2.11.1/camel-web-2.11.1.war?unpackFolder=target/m2e-jee/overlays&amp;includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/" handle="module:/overlay/slf/?includes=**/**&amp;excludes=META-INF/MANIFEST.MF">
+            <dependency-type>consumes</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/IGE Integration Guest Room Dining/src/main/webapp/src/main/java"/>
         <property name="context-root" value="/ige-integration"/>
     </wb-module>
