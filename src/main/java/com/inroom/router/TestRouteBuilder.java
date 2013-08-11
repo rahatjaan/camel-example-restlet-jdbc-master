@@ -17,70 +17,50 @@
 
 package com.inroom.router;
 
-import javax.jms.ConnectionFactory;
+import java.util.Properties;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.mail.MailComponent;
 import org.apache.camel.impl.DefaultCamelContext;
 
-import com.inroom.utils.BeanToXML;
+import com.inroom.processes.JMSProcessor;
+import com.inroom.processes.MyProcessor;
+import com.inroom.processes.RestProcessor;
 import com.inroom.utils.DataBean;
-import com.inroom.utils.XMLToBean;
 
 public class TestRouteBuilder extends RouteBuilder {
 	// create CamelContext
     CamelContext context = new DefaultCamelContext();
     
-    private final String HOSTNAME = "123";
-    private final String PORT = "123";
-    private final String PASSWORD = "123";
-    private final String USERNAME = "123";
-    private final String FROM = "123";
-    private final String TO = "123";
+    private final String HOSTNAME = "smtp.gmail.com";
+    private final String PORT = "587";
+    private final String PASSWORD = "PASSWORD";
+    private final String USERNAME = "USERNAME";
+    private final String FROM = "FROM";
+    private final String TO = "TO";
 
     @Override
     public void configure() {
+    	
         from("restlet:/createOrder?restletMethod=POST")
         .transform()
         	.method(DataBean.class, "newData(${header[id]})")
         .pipeline("sql:{{sql.selectData}}")
         	.beanRef("orderBean","processOrder")
         .filter()
-        	.method(DataBean.class, "checkOrder").process(new Processor(){
-        		// Hard Coding here for now, need the Business Logic to tranfer to endpoint.
-        		public void process(Exchange exchange) throws Exception {
-        			String body = exchange.getIn().getBody().toString();
-        	    	DataBean obj = XMLToBean.readXML(body);
-        	    	obj.setId(2);        	    	
-        	    	String xml = BeanToXML.readObject(obj);
-        	    	System.out.println("XML HERE IS: "+xml);
-        	    	exchange.getOut().setBody(xml);
-        	    	exchange.getOut().setHeaders(exchange.getIn().getHeaders());
-                    System.out.println("Body is: " 
-                            + exchange.getIn().getBody(String.class));   
-                }
-        	})
+        	.method(DataBean.class, "checkOrder").process(new MyProcessor())
         .choice()
         		.when().xpath("/dataBean/id=1")
         			.to("jms:orders")
         		.when().xpath("/dataBean/id=2")
-        			.to("restlet:/postOrder?restletMethod=GET")
+        			//.setBody(this.body()).to("restlet:/postOrder?restletMethod=GET")
+        		.setBody(this.body()).to("restlet:/postOrder?restletMethod=GET")
         		.otherwise()
-        			.to("smtp://"+HOSTNAME+":"+PORT+"?password="+PASSWORD+"&username="+USERNAME+"&from="+FROM+"&to="+TO);
+        			.setHeader("subject", constant("TEST")).to("smtp://"+HOSTNAME+":"+PORT+"?password="+PASSWORD+"&username="+USERNAME+"&from="+FROM+"&to="+TO+"&mail.smtp.starttls.enable=true");
         
-        from("jms:orders").process(new Processor(){
-        	public void process(Exchange exchange) throws Exception {
-        		System.out.println("JMS ORDERS: "+exchange.getIn().getBody(String.class));
-            }
-        });
+        from("jms:orders").process(new JMSProcessor());
         
-        from("restlet:/postOrder?restletMethod=GET").process(new Processor(){
-        	public void process(Exchange exchange) throws Exception {
-        		System.out.println("RESLET ORDERS: "+exchange.getIn().getBody(String.class));
-            }
-        });
+        from("restlet:/postOrder?restletMethod=GET").process(new RestProcessor());
     }
 }

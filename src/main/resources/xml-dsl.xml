@@ -39,72 +39,60 @@ limitations under the License.
 		</property>
 	</bean>
 	
-	<bean id="orderBean" class="com.inroom.utils.DataBean"/>
+	<bean id="dataBean" class="com.inroom.utils.DataBean"/>
+    <bean id="myProcessor" class="com.inroom.processes.MyProcessor"/>
+	<bean id="jmsProcessor" class="com.inroom.processes.JMSProcessor"/>
+	<bean id="restProcessor" class="com.inroom.processes.RestProcessor"/>
+	
+	<!-- <sslContextParameters id="sslContextParameters">
+	  <trustManagers>
+	    <keyStore resource="/users/home/server/truststore.jks" password="keystorePassword"/>
+	  </trustManagers>
+	</sslContextParameters> -->
+	
     <camelContext xmlns="http://camel.apache.org/schema/spring">
     <propertyPlaceholder id="placeholder" location="classpath:sql.properties" />
         <route id="createOrder">
             <from uri="restlet:/createOrder?restletMethod=POST" />
-			<!-- <unmarshal ref="xmljson"/>
-			<log message="Marshalled JSON Body: ${body}"/> -->
 			<transform>
                 <method method="newData(${header[id]})" 
 				ref="dataBean">
-				            </method></transform>
-            <!-- <setBody>
-                <simple>insert into user(firstName, lastName) values('${header.firstName}','${header.lastName}');
-                    CALL IDENTITY();
-                </simple>
-            </setBody> -->
-            <!-- <to uri="jdbc:dataSource"/> -->
-		        <to uri="sql:{{sql.selectData}}"/><!-- 
-		        <to uri="file:C:\\"/> -->
-		        <to uri="bean:orderBean?method=processOrder"/>
-		        <!-- <to uri="jms:test"/> -->
-            <log message="Selected new Data ${body}">
-        	</log>
+				</method>
+			</transform>
+			<pipeline>
+				<to uri="sql:{{sql.selectData}}"/>
+				<to uri="bean:dataBean?method=processOrder"/>
+					<filter>
+			            <method method="checkOrder" 
+						ref="dataBean">
+						</method>
+			   			<to uri="bean:myProcessor"/>
+			    <choice>
+		            <when>
+		                <xpath>/dataBean/id = 1</xpath>
+		                <to uri="jms:orders"/>
+		            </when>
+		            <when>
+		                <xpath>/dataBean/id = 2</xpath>
+		                <to uri="restlet:/postOrder?restletMethod=GET"/>
+		            </when>
+		            <otherwise>
+		                <to uri="smtp://smtp.gmail.com:587?username=efficientlydone@gmail.com&amp;password=@deel43672462676760&amp;from=efficientlydone@gmail.com&amp;to=mrseven7seven@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
+		                <!-- <to uri="file://C://" /> -->
+		            </otherwise>
+		        </choice>
+			        </filter>
+			</pipeline>
         </route>
         
-        <!-- <route>
-        	<from uri="jms:test" />
-        	<to uri="file:data/outbox" />
-        </route> -->
-        <!-- 
-
-        <route id="getUser">
-            <from uri="restlet:/user/{userId}?restletMethods=GET,PUT,DELETE"/>
-            <choice>
-                <when>
-                    <simple>${header.CamelHttpMethod} == 'GET'</simple>
-                    <setBody>
-                        <simple>select * from user where id = ${header.userId}</simple>
-                    </setBody>
-                </when>
-                <when>
-                    <simple>${header.CamelHttpMethod} == 'PUT'</simple>
-                    <setBody>
-                        <simple>update user set firstName='${header.firstName}', lastName='${header.lastName}' where id = ${header.userId}</simple>
-                    </setBody>
-                </when>
-                <when>
-                    <simple>${header.CamelHttpMethod} == 'DELETE'</simple>
-                    <setBody>
-                        <simple>delete from user where id = ${header.userId}</simple>
-                    </setBody>
-                </when>
-                <otherwise>
-                    <stop/>
-                </otherwise>
-            </choice>
-            <to uri="jdbc:dataSource"/>
+        <route id="jmsProcessorOrder">
+            <from uri="jms:orders" />
+            <to uri="bean:jmsProcessor"/>
         </route>
-
-        <route id="listUsers">
-            <from uri="restlet:/users"/>
-            <setBody>
-                <constant>select * from user</constant>
-            </setBody>
-            <to uri="jdbc:dataSource"/>
-        </route> -->
-	<!-- </propertyPlaceholder> -->
+        
+        <route id="restProcessorOrder">
+            <from uri="restlet:/postOrder?restletMethod=GET" />
+            <to uri="bean:restProcessor"/>
+        </route>
     </camelContext>
 </beans>
