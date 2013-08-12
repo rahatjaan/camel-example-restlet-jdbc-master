@@ -84,7 +84,28 @@
 		<route id="placeInRoomDiningOrder">
 			<from uri="restlet:/placeOrder?restletMethod=POST" />
 			<unmarshal ref="xmljsonWithOptions" />
-			<to uri="file://D://" />
+<!-- 			<to uri="bean:tenantInfoFilter?method=populateTenantInfo" /> -->
+			<filter>
+					<method method="populateTenantInfo" ref="tenantInfoFilter">
+					</method>
+<!-- 					<to uri="bean:myProcessor" /> -->
+					<choice>
+						<when>
+							<xpath>/dataBean/id = 1</xpath>
+							<to uri="jms:orders" />
+						</when>
+						<when>
+							<xpath>/dataBean/id = 2</xpath>
+							<to uri="restlet:/postOrder?restletMethod=GET" />
+						</when>
+						<otherwise>
+							<to
+								uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
+							<!-- <to uri="file://C://" /> -->
+						</otherwise>
+					</choice>
+				</filter>
+<!-- 			<to uri="file://D://" /> -->
 		</route>
 	</camelContext>
 </beans>
