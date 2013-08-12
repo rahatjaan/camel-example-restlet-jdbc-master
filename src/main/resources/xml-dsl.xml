@@ -22,7 +22,7 @@
 		</property>
 	</bean>
 
-	
+
 	<bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor" />
 	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor" />
 	<bean id="restProcessor" class="ige.integration.processes.RestProcessor" />
@@ -33,6 +33,12 @@
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 		<propertyPlaceholder id="placeholder" location="classpath:sql.properties" />
+		<dataFormats>
+			<xmljson id="xmljson" />
+			<xmljson id="xmljsonWithOptions" forceTopLevelObject="true"
+				trimSpaces="true" rootName="newRoot" skipNamespaces="true"
+				removeNamespacePrefixes="true" expandableProperties="d e" />
+		</dataFormats>
 		<route id="createOrder">
 			<from uri="restlet:/createOrder?restletMethod=POST" />
 			<transform>
@@ -73,6 +79,12 @@
 		<route id="restProcessorOrder">
 			<from uri="restlet:/postOrder?restletMethod=GET" />
 			<to uri="bean:restProcessor" />
+		</route>
+
+		<route id="placeInRoomDiningOrder">
+			<from uri="restlet:/placeOrder?restletMethod=POST" />
+			<unmarshal ref="xmljsonWithOptions" />
+			<to uri="file://D://" />
 		</route>
 	</camelContext>
 </beans>

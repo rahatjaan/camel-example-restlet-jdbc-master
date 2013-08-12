@@ -15,6 +15,7 @@
         </constructor-arg>
     </bean>
 	<bean id="dataBean" class="ige.integration.utils.DataBean" />
+	<bean id="placeOrderBean" class="ige.integration.model.InRoomOrder" />
     <!-- <jdbc:embedded-database id="dataSource" type="HSQL">
         <jdbc:script location="classpath:sql/init.sql"/>
     </jdbc:embedded-database> -->
