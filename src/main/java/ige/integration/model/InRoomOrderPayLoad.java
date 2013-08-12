@@ -3,6 +3,7 @@ package ige.integration.model;
 
 public class InRoomOrderPayLoad {
 
+	
 	private String payload;
 	private Object objectPayload;
 	private TenantInfo tenant;
@@ -33,4 +34,8 @@ public class InRoomOrderPayLoad {
 		this.tenant = tenant;
 	}
 	
+	@Override
+	public String toString() {
+		return payload;
+	}	
 }

@@ -18,6 +18,10 @@ public class TenantInfo {
 		this.outboundPassword = outboundPassword;
 	}
 	
+	public TenantInfo() {
+	}
+
+
 	public String getTenantId() {
 		return tenantId;
 	}
