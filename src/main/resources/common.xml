@@ -14,7 +14,7 @@
             <ref bean="RestletComponent" />
         </constructor-arg>
     </bean>
-
+	<bean id="dataBean" class="ige.integration.utils.DataBean" />
     <!-- <jdbc:embedded-database id="dataSource" type="HSQL">
         <jdbc:script location="classpath:sql/init.sql"/>
     </jdbc:embedded-database> -->

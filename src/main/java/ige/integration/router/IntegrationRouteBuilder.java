@@ -29,7 +29,7 @@ public class IntegrationRouteBuilder extends RouteBuilder {
         .transform()
         	.method(DataBean.class, "newData(${header[id]})")
         .pipeline("sql:{{sql.selectData}}")
-        	.beanRef("orderBean","processOrder")
+        	.beanRef("dataBean","processOrder")
         .filter()
         	.method(DataBean.class, "checkOrder").process(new IntegrationProcessor())
         .choice()

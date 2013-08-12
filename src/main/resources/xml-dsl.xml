@@ -22,7 +22,7 @@
 		</property>
 	</bean>
 
-	<bean id="dataBean" class="ige.integration.utils.DataBean" />
+	
 	<bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor" />
 	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor" />
 	<bean id="restProcessor" class="ige.integration.processes.RestProcessor" />
