@@ -1,36 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Licensed to the Apache Software Foundation (ASF) under one or more
-contributor license agreements. See the NOTICE file distributed with
-this work for additional information regarding copyright ownership.
-The ASF licenses this file to You under the Apache License, Version 2.0
-(the "License"); you may not use this file except in compliance with
-the License. You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
- 	<bean id="executor" class="java.util.concurrent.Executors"
-	factory-method="newFixedThreadPool">
+	<bean id="executor" class="java.util.concurrent.Executors"
+		factory-method="newFixedThreadPool">
 		<constructor-arg index="0" value="16" />
 	</bean>
 
-    <import resource="common.xml" />
-    <import resource="database.xml" />
+	<import resource="common.xml" />
+	<import resource="database.xml" />
 	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
 		<property name="connectionFactory">
 			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -38,61 +21,58 @@ limitations under the License.
 			</bean>
 		</property>
 	</bean>
-	
-	<bean id="dataBean" class="ige.integration.utils.DataBean"/>
-    <bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor"/>
-	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor"/>
-	<bean id="restProcessor" class="ige.integration.processes.RestProcessor"/>
-	
-	<!-- <sslContextParameters id="sslContextParameters">
-	  <trustManagers>
-	    <keyStore resource="/users/home/server/truststore.jks" password="keystorePassword"/>
-	  </trustManagers>
-	</sslContextParameters> -->
-	
-    <camelContext xmlns="http://camel.apache.org/schema/spring">
-    <propertyPlaceholder id="placeholder" location="classpath:sql.properties" />
-        <route id="createOrder">
-            <from uri="restlet:/createOrder?restletMethod=POST" />
+
+	<bean id="dataBean" class="ige.integration.utils.DataBean" />
+	<bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor" />
+	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor" />
+	<bean id="restProcessor" class="ige.integration.processes.RestProcessor" />
+
+	<!-- <sslContextParameters id="sslContextParameters"> <trustManagers> <keyStore 
+		resource="/users/home/server/truststore.jks" password="keystorePassword"/> 
+		</trustManagers> </sslContextParameters> -->
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<propertyPlaceholder id="placeholder" location="classpath:sql.properties" />
+		<route id="createOrder">
+			<from uri="restlet:/createOrder?restletMethod=POST" />
 			<transform>
-                <method method="newData(${header[id]})" 
-				ref="dataBean">
+				<method method="newData(${header[id]})" ref="dataBean">
 				</method>
 			</transform>
 			<pipeline>
-				<to uri="sql:{{sql.selectData}}"/>
-				<to uri="bean:dataBean?method=processOrder"/>
-					<filter>
-			            <method method="checkOrder" 
-						ref="dataBean">
-						</method>
-			   			<to uri="bean:myProcessor"/>
-			    <choice>
-		            <when>
-		                <xpath>/dataBean/id = 1</xpath>
-		                <to uri="jms:orders"/>
-		            </when>
-		            <when>
-		                <xpath>/dataBean/id = 2</xpath>
-		                <to uri="restlet:/postOrder?restletMethod=GET"/>
-		            </when>
-		            <otherwise>
-		                <to uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
-		                <!-- <to uri="file://C://" /> -->
-		            </otherwise>
-		        </choice>
-			        </filter>
+				<to uri="sql:{{sql.selectData}}" />
+				<to uri="bean:dataBean?method=processOrder" />
+				<filter>
+					<method method="checkOrder" ref="dataBean">
+					</method>
+					<to uri="bean:myProcessor" />
+					<choice>
+						<when>
+							<xpath>/dataBean/id = 1</xpath>
+							<to uri="jms:orders" />
+						</when>
+						<when>
+							<xpath>/dataBean/id = 2</xpath>
+							<to uri="restlet:/postOrder?restletMethod=GET" />
+						</when>
+						<otherwise>
+							<to
+								uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
+							<!-- <to uri="file://C://" /> -->
+						</otherwise>
+					</choice>
+				</filter>
 			</pipeline>
-        </route>
-        
-        <route id="jmsProcessorOrder">
-            <from uri="jms:orders" />
-            <to uri="bean:jmsProcessor"/>
-        </route>
-        
-        <route id="restProcessorOrder">
-            <from uri="restlet:/postOrder?restletMethod=GET" />
-            <to uri="bean:restProcessor"/>
-        </route>
-    </camelContext>
+		</route>
+
+		<route id="jmsProcessorOrder">
+			<from uri="jms:orders" />
+			<to uri="bean:jmsProcessor" />
+		</route>
+
+		<route id="restProcessorOrder">
+			<from uri="restlet:/postOrder?restletMethod=GET" />
+			<to uri="bean:restProcessor" />
+		</route>
+	</camelContext>
 </beans>
