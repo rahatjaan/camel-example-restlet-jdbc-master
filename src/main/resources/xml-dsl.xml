@@ -94,15 +94,15 @@
 <!-- 							<to uri="restlet:/postOrder?restletMethod=GET" /> -->
 <!-- 						</when> -->
 						<when>
-							<simple>${body.tenant.outboundType}=='1'</simple>
+							<simple>${body.tenant.outboundType}=="1"</simple>
 							<to uri="restlet:/postOrder?restletMethod=GET" />
 						</when>
 						<when>
-							<simple>${body.tenant.outboundType}=='2'</simple>
+							<simple>${body.tenant.outboundType}=="2"</simple>
 							<to uri="jms:orders" />
 						</when>
 						<when>
-							<simple>${body.tenant.outboundType}=='3'</simple>
+							<simple>${body.tenant.outboundType}=="3"</simple>
 							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
 						</when>
 						<otherwise>
