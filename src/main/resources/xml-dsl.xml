@@ -83,22 +83,6 @@
 			<unmarshal ref="xmljsonWithOptions" />
 			<to uri="bean:integrationProcessor" />
 			<choice>
-						<!-- <when>
-							<simple>${in.body} == null</simple>
-							<to uri="restlet:/postOrder?restletMethod=GET" />
-						</when>
-						<when>
-							<simple>${in.body.outboundType}== "1"</simple>
-							<to uri="restlet:/postOrder?restletMethod=GET" />
-						</when>
-						<when>
-							<simple>${in.body.outboundType}== "2"</simple>
-							<to uri="jms:orders" />
-						</when>
-						<when>
-							<simple>${in.body.outboundType}== "3"</simple>
-							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
-						</when> -->
 						<when>
 							<xpath>/tenantInfo/outboundType = 1</xpath>
 							<to uri="http://localhost:8080/RestfullConsumer/InRoomDinning" />
@@ -119,34 +103,6 @@
 						</otherwise>
 					</choice>
 					
-<!-- 			<to uri="bean:tenantInfoFilter?method=populateTenantInfo" /> -->
-			<!-- <filter>
-					<method method="populateTenantInfo" ref="tenantInfoFilter">
-					</method>
-					<to uri="bean:myProcessor" />
-					<choice>
-						<when>
-							<simple>${body.tenant} is null</simple>
-							<to uri="restlet:/postOrder?restletMethod=GET" />
-						</when>
-						<when>
-							<simple>${body.tenant.outboundType}== "1"</simple>
-							<to uri="restlet:/postOrder?restletMethod=GET" />
-						</when>
-						<when>
-							<simple>${body.tenant.outboundType}== "2"</simple>
-							<to uri="jms:orders" />
-						</when>
-						<when>
-							<simple>${body.tenant.outboundType}== "3"</simple>
-							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
-						</when>
-						<otherwise>
-							<to uri="file://D://" /> 
-						</otherwise>
-					</choice>
-				</filter> -->
-
 		</route>
 		
 		<route id="jmsProcessorOrder">
