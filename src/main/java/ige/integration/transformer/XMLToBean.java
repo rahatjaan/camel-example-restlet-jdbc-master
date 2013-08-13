@@ -1,5 +1,7 @@
 package ige.integration.transformer;
 
+import ige.integration.utils.DataBean;
+
 import java.io.StringReader;
 
 import javax.xml.bind.JAXBContext;
