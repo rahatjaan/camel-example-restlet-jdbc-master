@@ -10,8 +10,8 @@
 		id="myDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/camel" />
-		<property name="username" value="root" />
-		<property name="password" value="rahat547" />
+		<property name="username" value="rahat" />
+		<property name="password" value="rahat" />
 	</bean>
 
 	<bean class="ige.integration.utils.DatabaseCreation"

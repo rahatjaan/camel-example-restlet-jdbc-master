@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="IGE Integration"
+  name="IGE Integration Guest Room Dining"
   id="myeclipse.1375917750188"
   context-root="/ige-integration"
   j2ee-spec="5.0"
-  archive="IGE Integration.war">
+  archive="IGE Integration Guest Room Dining.war">
   <attributes>
     <attribute name="webrootdir" value="src/main/webapp" />
   </attributes>
