@@ -30,6 +30,7 @@ public class IntegrationProcessor implements Processor {
 		//System.out.println("IN PROCESSOR: "+exchange.getIn(InRoomOrderPayLoad.class).getTenant().getTenantId());
 		String xml = BeanToXML.readObject(payload.getTenant());
 		exchange.getOut().setBody(xml);
+		exchange.getIn().setBody(xml);
 		System.out.println("PROCESSOR ENDS "+xml);
 //		if(payload.getTenant().getOutboundType()!=1){
 //			Response response = exchange.getIn().getHeader(RestletConstants.RESTLET_RESPONSE, Response.class);

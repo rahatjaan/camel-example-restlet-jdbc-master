@@ -89,7 +89,7 @@
 						</when>
 						<when>
 							<xpath>/tenantInfo/outboundType = 2</xpath>
-							<to uri="jms:orders" />
+							<to uri="jms:ordRestfullConsumerRestfullConsumerRestfullConsumerRestfullConsumers" />
 <!-- 							<to uri="bean:responseProcessor" /> -->
 						</when>
 						<when>
