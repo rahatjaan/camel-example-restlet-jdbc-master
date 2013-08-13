@@ -26,14 +26,19 @@ public class IntegrationProcessor implements Processor {
 	public void process(Exchange exchange) throws Exception {
 		// TODO Auto-generated method stub
 		InRoomOrderPayLoad payload = populateTenantInfo(exchange);
-		System.out.println("IN PROCESSOR TOP: "+payload.toString());
+//		System.out.println("IN PROCESSOR TOP: "+payload.toString());
 		//System.out.println("IN PROCESSOR: "+exchange.getIn(InRoomOrderPayLoad.class).getTenant().getTenantId());
 		String xml = BeanToXML.readObject(payload.getTenant());
 		exchange.getOut().setBody(xml);
 		System.out.println("PROCESSOR ENDS "+xml);
-		Response response = exchange.getIn().getHeader(RestletConstants.RESTLET_RESPONSE, Response.class);
-        response.setStatus(Status.SUCCESS_OK);
-        response.setEntity("<response>Order is sent!</response>", MediaType.TEXT_XML);
+//		if(payload.getTenant().getOutboundType()!=1){
+//			Response response = exchange.getIn().getHeader(RestletConstants.RESTLET_RESPONSE, Response.class);
+//			response.setStatus(Status.SUCCESS_OK);
+//			response.setEntity("<response>Order is sent!</response>", MediaType.TEXT_XML);
+//		}else
+//		{
+//			System.out.println("HTTP Outbound END POINT will serve this request");
+//		}
         //exchange.getOut().setBody(response);
 		//System.out.println("EXCHANGE IS NOW!!! "+exchange.getIn().getBody().toString());
 		/*InRoomOrderPayLoad p = exchange.getIn().getBody(InRoomOrderPayLoad.class);
@@ -60,9 +65,9 @@ public class IntegrationProcessor implements Processor {
 	public InRoomOrderPayLoad populateTenantInfo(Exchange exchange){
 		String value = exchange.getIn().getBody().toString();
 		System.out.println("PopulateTenantInfo xml \n"+value);
-		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test_guid2"));
+		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test_guid"));
 		System.out.println("PAYLOAD HERE IS: "+payload.getTenant().getTenantId());
-		String val = "<outboundType>"+payload.getTenant().getOutboundType()+"</outboudType>"+"<outboundURL>"+payload.getTenant().getOutboundUrl()+"</outboundURL>";
+//		String val = "<outboundType>"+payload.getTenant().getOutboundType()+"</outboudType>"+"<outboundURL>"+payload.getTenant().getOutboundUrl()+"</outboundURL>";
 		
 		/*exchange.getOut().setBody(payload, InRoomOrderPayLoad.class);
 		System.out.println("MEDIUM IS: "+exchange.getIn().getBody().toString());*/

@@ -101,21 +101,24 @@
 						</when> -->
 						<when>
 							<xpath>/tenantInfo/outboundType = 1</xpath>
-							<to uri="restlet:/postOrder?restletMethod=GET" />
+							<to uri="http://localhost:8080/RestfullConsumer/InRoomDinning" />
 						</when>
 						<when>
 							<xpath>/tenantInfo/outboundType = 2</xpath>
 							<to uri="jms:orders" />
+<!-- 							<to uri="bean:responseProcessor" /> -->
 						</when>
 						<when>
 							<xpath>/tenantInfo/outboundType = 3</xpath>
 							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
+							<to uri="bean:responseProcessor" />
 						</when>
 						<otherwise>
 							<to uri="file://C://" /> 
+							<to uri="bean:responseProcessor" />
 						</otherwise>
 					</choice>
-					<to uri="bean:responseProcessor" />
+					
 <!-- 			<to uri="bean:tenantInfoFilter?method=populateTenantInfo" /> -->
 			<!-- <filter>
 					<method method="populateTenantInfo" ref="tenantInfoFilter">
