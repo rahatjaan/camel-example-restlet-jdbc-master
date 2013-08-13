@@ -23,9 +23,11 @@
 	</bean>
 
 
-	<bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor" />
+	<!-- <bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor" /> -->
 	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor" />
 	<bean id="restProcessor" class="ige.integration.processes.RestProcessor" />
+	<bean id="responseProcessor" class="ige.integration.processes.ResponseProcessor" />
+	
 
 	<!-- <sslContextParameters id="sslContextParameters"> <trustManagers> <keyStore 
 		resource="/users/home/server/truststore.jks" password="keystorePassword"/> 
@@ -39,7 +41,7 @@
 				trimSpaces="true" rootName="newRoot" skipNamespaces="true"
 				removeNamespacePrefixes="true" expandableProperties="d e" />
 		</dataFormats>
-		<route id="createOrder">
+		<!-- <route id="createOrder">
 			<from uri="restlet:/createOrder?restletMethod=POST" />
 			<transform>
 				<method method="newData(${header[id]})" ref="dataBean">
@@ -64,17 +66,12 @@
 						<otherwise>
 							<to
 								uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
-							<!-- <to uri="file://C://" /> -->
+							<to uri="file://C://" />
 						</otherwise>
 					</choice>
 				</filter>
 			</pipeline>
-		</route>
-
-		<route id="jmsProcessorOrder">
-			<from uri="jms:orders" />
-			<to uri="bean:jmsProcessor" />
-		</route>
+		</route> -->
 
 		<route id="restProcessorOrder">
 			<from uri="restlet:/postOrder?restletMethod=GET" />
@@ -84,33 +81,76 @@
 		<route id="placeInRoomDiningOrder">
 			<from uri="restlet:/placeOrder?restletMethod=POST" />
 			<unmarshal ref="xmljsonWithOptions" />
-<!-- 			<to uri="bean:tenantInfoFilter?method=populateTenantInfo" /> -->
-			<filter>
-					<method method="populateTenantInfo" ref="tenantInfoFilter">
-					</method>
-					<choice>
-<!-- 						<when> -->
-<!-- 							<simple>${body.tenant} is null</simple> -->
-<!-- 							<to uri="restlet:/postOrder?restletMethod=GET" /> -->
-<!-- 						</when> -->
-						<when>
-							<simple>${body.tenant.outboundType}=="1"</simple>
+			<to uri="bean:integrationProcessor" />
+			<choice>
+						<!-- <when>
+							<simple>${in.body} == null</simple>
 							<to uri="restlet:/postOrder?restletMethod=GET" />
 						</when>
 						<when>
-							<simple>${body.tenant.outboundType}=="2"</simple>
+							<simple>${in.body.outboundType}== "1"</simple>
+							<to uri="restlet:/postOrder?restletMethod=GET" />
+						</when>
+						<when>
+							<simple>${in.body.outboundType}== "2"</simple>
 							<to uri="jms:orders" />
 						</when>
 						<when>
-							<simple>${body.tenant.outboundType}=="3"</simple>
+							<simple>${in.body.outboundType}== "3"</simple>
+							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
+						</when> -->
+						<when>
+							<xpath>/tenantInfo/outboundType = 1</xpath>
+							<to uri="restlet:/postOrder?restletMethod=GET" />
+						</when>
+						<when>
+							<xpath>/tenantInfo/outboundType = 2</xpath>
+							<to uri="jms:orders" />
+						</when>
+						<when>
+							<xpath>/tenantInfo/outboundType = 3</xpath>
+							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
+						</when>
+						<otherwise>
+							<to uri="file://C://" /> 
+						</otherwise>
+					</choice>
+					<to uri="bean:responseProcessor" />
+<!-- 			<to uri="bean:tenantInfoFilter?method=populateTenantInfo" /> -->
+			<!-- <filter>
+					<method method="populateTenantInfo" ref="tenantInfoFilter">
+					</method>
+					<to uri="bean:myProcessor" />
+					<choice>
+						<when>
+							<simple>${body.tenant} is null</simple>
+							<to uri="restlet:/postOrder?restletMethod=GET" />
+						</when>
+						<when>
+							<simple>${body.tenant.outboundType}== "1"</simple>
+							<to uri="restlet:/postOrder?restletMethod=GET" />
+						</when>
+						<when>
+							<simple>${body.tenant.outboundType}== "2"</simple>
+							<to uri="jms:orders" />
+						</when>
+						<when>
+							<simple>${body.tenant.outboundType}== "3"</simple>
 							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
 						</when>
 						<otherwise>
 							<to uri="file://D://" /> 
 						</otherwise>
 					</choice>
-				</filter>
+				</filter> -->
 
 		</route>
+		
+		<route id="jmsProcessorOrder">
+			<from uri="jms:orders" />
+			<to uri="bean:jmsProcessor" />
+		</route>
+		
+		
 	</camelContext>
 </beans>

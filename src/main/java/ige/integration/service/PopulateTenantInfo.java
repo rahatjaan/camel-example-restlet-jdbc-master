@@ -1,5 +1,6 @@
 package ige.integration.service;
 
+import ige.integration.model.InRoomOrder;
 import ige.integration.model.InRoomOrderPayLoad;
 import ige.integration.model.TenantInfo;
 
@@ -20,8 +21,16 @@ public class PopulateTenantInfo {
 	public InRoomOrderPayLoad populateTenantInfo(Exchange exchange){
 		String value = exchange.getIn().getBody().toString();
 		System.out.println("PopulateTenantInfo xml \n"+value);
-		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test_guid"));
-		exchange.getIn().setBody(payload);
+		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test_guid2"));
+		System.out.println("PAYLOAD HERE IS: "+payload.getTenant().getTenantId());
+		String val = "<outboundType>"+payload.getTenant().getOutboundType()+"</outboudType>"+"<outboundURL>"+payload.getTenant().getOutboundUrl()+"</outboundURL>";
+		/*exchange.getOut().setBody(payload, InRoomOrderPayLoad.class);
+		System.out.println("MEDIUM IS: "+exchange.getIn().getBody().toString());*/
+		exchange.getOut().setBody(value+val);
+		ige.integration.constants.Constants.payload = value+val;
+		/*InRoomOrderPayLoad obj = exchange.getIn(InRoomOrderPayLoad.class);
+		System.out.println("OBJECT HERE IS: "+obj.getTenant().getTenantId());*/
+		
 		return payload;
 	}
 	

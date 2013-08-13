@@ -19,6 +19,11 @@
 		<property name="dataSource" ref="myDataSource" />
 
 	</bean>
+	
+	<bean id="integrationProcessor" class="ige.integration.processes.IntegrationProcessor">
+		<property name="dataSource" ref="myDataSource" />
+
+	</bean>
 
 	<!-- <jdbc:embedded-database id="dataSource" type="HSQL"> <jdbc:script location="classpath:sql/init.sql"/> 
 		</jdbc:embedded-database> -->
