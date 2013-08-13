@@ -20,13 +20,14 @@ public class PopulateTenantInfo {
 	public InRoomOrderPayLoad populateTenantInfo(Exchange exchange){
 		String value = exchange.getIn().getBody().toString();
 		System.out.println("PopulateTenantInfo xml \n"+value);
-		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test"));
+		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test_guid"));
+		exchange.getIn().setBody(payload);
 		return payload;
 	}
 	
 	public TenantInfo getTenantInfo(String tenantId){
 		 JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-	     String sql = "select * from tenant where tenantguid="+tenantId;
+	     String sql = "select * from tenant where tenant_guid='"+tenantId+"'";
 	        try {
 	        	TenantInfo info = jdbc.query(sql, new ResultSetExtractor<TenantInfo>(){
 
@@ -38,6 +39,11 @@ public class PopulateTenantInfo {
 							info.setOutboundType(result.getInt("outbound_end_point_type"));
 							info.setOutboundUrl(result.getString("outbound_url"));
 						}
+						else
+						{
+							return null;
+						}
+						System.out.println("tenant found, outbound type:"+info.getOutboundType()+",url:"+info.getOutboundUrl());
 						return info;
 					}
 	            });
