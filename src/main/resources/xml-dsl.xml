@@ -85,7 +85,16 @@
 			<choice>
 						<when>
 							<xpath>/tenantInfo/outboundType = 1</xpath>
-							<to uri="http://localhost:8080/RestfullConsumer/InRoomDinning" />
+										<setHeader headerName="CamelHttpMethod"> 
+		                                		<constant>POST</constant> 
+				                        </setHeader> 
+				                        <setHeader headerName="Content-Type"> 
+				                                <constant>application/x-www-form-urlencoded</constant> 
+				                        </setHeader> 
+		                                <setBody> 
+		                                        <simple>BODY=${in.body}&amp;HEADER=${in.headers}</simple> 
+		                             	</setBody> 
+							<to uri="http://localhost:8080/RestConsumer/InRoomDinning" />
 						</when>
 						<when>
 							<xpath>/tenantInfo/outboundType = 2</xpath>
