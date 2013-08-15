@@ -84,7 +84,9 @@
 			<to uri="bean:integrationProcessor" />
 			<choice>
 						<when>
-							<xpath>/tenantInfo/outboundType = 1</xpath>
+<!-- 							<xpath>/tenantInfo/outboundType = 1</xpath> -->
+								<simple>${in.body.tenant.outboundType} == '1'</simple>
+										
 										<setHeader headerName="CamelHttpMethod"> 
 		                                		<constant>POST</constant> 
 				                        </setHeader> 
@@ -94,15 +96,19 @@
 		                                <setBody> 
 		                                        <simple>BODY=${in.body}&amp;HEADER=${in.headers}</simple> 
 		                             	</setBody> 
-							<to uri="http://localhost:8080/RestConsumer/InRoomDinning" />
+		                             	
+							<to uri="http://localhost:8080/RestfullConsumer/InRoomDinning" />
+<!-- 							<to uri="simple(${in.body.tenant.outboundUrl})" /> -->
 						</when>
 						<when>
-							<xpath>/tenantInfo/outboundType = 2</xpath>
-							<to uri="jms:ordRestfullConsumerRestfullConsumerRestfullConsumerRestfullConsumers" />
+<!-- 							<xpath>/tenantInfo/outboundType = 2</xpath> -->
+							<simple>${in.body.tenant.outboundType} == '2'</simple>
+							<to uri="jms:orders" />
 <!-- 							<to uri="bean:responseProcessor" /> -->
 						</when>
 						<when>
-							<xpath>/tenantInfo/outboundType = 3</xpath>
+<!-- 							<xpath>/tenantInfo/outboundType = 3</xpath> -->
+							<simple>${in.body.tenant.outboundType} == '3'</simple>
 							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
 							<to uri="bean:responseProcessor" />
 						</when>
