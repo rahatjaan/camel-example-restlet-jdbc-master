@@ -28,8 +28,9 @@
 		<property name="dataSource" ref="myDataSource" />
 
 	</bean>
+	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor" />
+	<bean id="restProcessor" class="ige.integration.processes.RestProcessor" />
+	<bean id="responseProcessor" class="ige.integration.processes.ResponseProcessor" />
 
-	<!-- <jdbc:embedded-database id="dataSource" type="HSQL"> <jdbc:script location="classpath:sql/init.sql"/> 
-		</jdbc:embedded-database> -->
 
 </beans>

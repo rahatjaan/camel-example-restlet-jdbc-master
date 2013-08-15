@@ -34,6 +34,10 @@ public class InRoomDiningProcessor implements Processor {
 			tenantId = "test_guid";
 		System.out.println("PopulateTenantInfo xml \n" + value+"\ntenantId:"+tenantId);
 		TenantInfo tenant = getTenantInfo(tenantId);
+		if(tenant==null){
+			tenant = new TenantInfo();
+			tenant.setOutboundUrl("404");
+		}
 		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,tenant);
 		return payload;
 	}

@@ -61,7 +61,7 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 				+ "&username=" + USERNAME + "&from=" + FROM + "&to="
 				+ TO + "&mail.smtp.starttls.enable=true")
 		.otherwise()
-		.to("file://C://");
+		.beanRef("responseProcessor");
 	}
 
 	private void restLetInFlow() {

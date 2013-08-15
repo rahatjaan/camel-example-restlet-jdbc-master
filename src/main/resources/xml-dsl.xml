@@ -22,17 +22,6 @@
 		</property>
 	</bean>
 
-
-	<!-- <bean id="myProcessor" class="ige.integration.processes.IntegrationProcessor" /> -->
-	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor" />
-	<bean id="restProcessor" class="ige.integration.processes.RestProcessor" />
-	<bean id="responseProcessor" class="ige.integration.processes.ResponseProcessor" />
-	
-
-	<!-- <sslContextParameters id="sslContextParameters"> <trustManagers> <keyStore 
-		resource="/users/home/server/truststore.jks" password="keystorePassword"/> 
-		</trustManagers> </sslContextParameters> -->
-
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 		<propertyPlaceholder id="placeholder" location="classpath:sql.properties" />
 		<dataFormats>
@@ -110,10 +99,9 @@
 <!-- 							<xpath>/tenantInfo/outboundType = 3</xpath> -->
 							<simple>${in.body.tenant.outboundType} == '3'</simple>
 							<to	uri="smtp://smtp.gmail.com:587?username=username@gmail.com&amp;password=password&amp;from=from@gmail.com&amp;to=to@gmail.com&amp;subject=Spring DSL&amp;mail.smtp.starttls.enable=true" />
-							<to uri="bean:responseProcessor" />
+							
 						</when>
 						<otherwise>
-							<to uri="file://C://" /> 
 							<to uri="bean:responseProcessor" />
 						</otherwise>
 					</choice>
