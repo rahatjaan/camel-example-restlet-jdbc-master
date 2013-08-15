@@ -22,11 +22,9 @@
 	
 	<bean id="integrationProcessor" class="ige.integration.processes.IntegrationProcessor">
 		<property name="dataSource" ref="myDataSource" />
-
 	</bean>
 	<bean id="inRoomDiningProcessor" class="ige.integration.processes.InRoomDiningProcessor">
 		<property name="dataSource" ref="myDataSource" />
-
 	</bean>
 	<bean id="jmsProcessor" class="ige.integration.processes.JMSProcessor" />
 	<bean id="restProcessor" class="ige.integration.processes.RestProcessor" />

@@ -25,19 +25,22 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 
 		igeInroomDiningFlow();
 		jmsInFlow();//test flow to receive message, mocking as POS inbound endpoint
-//		igeInroomDining();
-		/*
-		flow1();	
-		restLetInFlow();
-		*/
+		
+		guestCheckInFlow();
 	}
-
-	private void igeInroomDining() {
-		from("restlet:/placeOrder?restletMethod=POST")
+	
+	private void guestCheckInFlow() {
+		from("restlet:/guestCheckin?restletMethod=POST")
 		.unmarshal().xmljson()	
-		.beanRef("inRoomDiningProcessor");	
+		.beanRef("inRoomDiningProcessor")	
+		.setHeader("OutboundUrl").simple("${in.body.tenant.outboundUrl}")
+		.setHeader("CamelHttpMethod").constant("POST")
+		.setHeader("Content-Type").constant("application/x-www-form-urlencoded")
+		.setBody(simple("payload=${in.body}"))
+		.to("http://localhost:8080/POSMockup/guestcheckin");
 		
 	}
+
 	
 	private void igeInroomDiningFlow() {
 		from("restlet:/placeOrder?restletMethod=POST")
