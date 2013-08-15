@@ -24,10 +24,10 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 	public void configure() {
 
 		igeInroomDiningFlow();
+		jmsInFlow();//test flow to receive message, mocking as POS inbound endpoint
 //		igeInroomDining();
 		/*
 		flow1();	
-		jmsInFlow();
 		restLetInFlow();
 		*/
 	}
