@@ -11,7 +11,7 @@ public class TenantInfo {
 	
 	private String tenantId;
 	
-	private Integer outboundType;
+	private String outboundType;
 	
 	private String outboundUrl;
 	
@@ -19,7 +19,7 @@ public class TenantInfo {
 	
 	private String outboundPassword;
 	
-	public TenantInfo(String tenantId, Integer outboundType,
+	public TenantInfo(String tenantId, String outboundType,
 			String outboundUrl, String outboundUserName, String outboundPassword) {
 		super();
 		this.tenantId = tenantId;
@@ -40,11 +40,11 @@ public class TenantInfo {
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
-	public Integer getOutboundType() {
+	public String getOutboundType() {
 		return outboundType;
 	}
 	@XmlElement
-	public void setOutboundType(Integer outboundType) {
+	public void setOutboundType(String outboundType) {
 		this.outboundType = outboundType;
 	}
 	public String getOutboundUrl() {

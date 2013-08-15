@@ -2,7 +2,6 @@ package ige.integration.processes;
 
 import ige.integration.model.InRoomOrderPayLoad;
 import ige.integration.model.TenantInfo;
-import ige.integration.utils.BeanToXML;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,11 +20,7 @@ public class IntegrationProcessor implements Processor {
 	
 	public void process(Exchange exchange) throws Exception {
 		InRoomOrderPayLoad payload = populateTenantInfo(exchange);
-//		System.out.println("IN PROCESSOR TOP: "+payload.toString());
-		//System.out.println("IN PROCESSOR: "+exchange.getIn(InRoomOrderPayLoad.class).getTenant().getTenantId());
-//		String xml = BeanToXML.readObject(InRoomOrderPayLoad.class,payload);
 		exchange.getOut().setBody(payload);
-//		exchange.getIn().setBody(payload.getPayload());
 		System.out.println("IntegrationProcessor \nout: "+payload.getPayload());
 
 	}
@@ -35,8 +30,7 @@ public class IntegrationProcessor implements Processor {
 		String value = exchange.getIn().getBody().toString();
 		System.out.println("PopulateTenantInfo xml \n"+value);
 		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test_guid"));
-		System.out.println("PAYLOAD HERE IS: "+payload.getTenant().getTenantId());
-		
+		System.out.println("PAYLOAD HERE IS: "+payload.getTenant().getTenantId());		
 		return payload;
 	}
 	

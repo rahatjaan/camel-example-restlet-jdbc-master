@@ -93,12 +93,12 @@
 				                        <setHeader headerName="Content-Type"> 
 				                                <constant>application/x-www-form-urlencoded</constant> 
 				                        </setHeader> 
+				                        
 		                                <setBody> 
 		                                        <simple>BODY=${in.body}&amp;HEADER=${in.headers}</simple> 
 		                             	</setBody> 
 		                             	
 							<to uri="http://localhost:8080/RestfullConsumer/InRoomDinning" />
-<!-- 							<to uri="simple(${in.body.tenant.outboundUrl})" /> -->
 						</when>
 						<when>
 <!-- 							<xpath>/tenantInfo/outboundType = 2</xpath> -->
