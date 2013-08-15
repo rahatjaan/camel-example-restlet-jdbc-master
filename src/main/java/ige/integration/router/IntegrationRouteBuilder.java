@@ -24,7 +24,7 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 	public void configure() {
 
 		igeInroomDiningFlow();
-		
+//		igeInroomDining();
 		/*
 		flow1();	
 		jmsInFlow();
@@ -32,16 +32,26 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 		*/
 	}
 
+	private void igeInroomDining() {
+		from("restlet:/placeOrder?restletMethod=POST")
+		.unmarshal().xmljson()	
+		.beanRef("inRoomDiningProcessor");	
+		
+	}
+	
 	private void igeInroomDiningFlow() {
 		from("restlet:/placeOrder?restletMethod=POST")
 		.unmarshal().xmljson()	
-		.beanRef("integrationProcessor")	
+		.beanRef("inRoomDiningProcessor")	
 		.choice()
+		.when(simple("${in.body.tenant.outboundType} == '404'"))
+		.beanRef("responseProcessor")
 		.when(simple("${in.body.tenant.outboundType} == '1'"))
+		.setHeader("OutboundUrl").simple("${in.body.tenant.outboundUrl}")
 		.setHeader("CamelHttpMethod").constant("POST")
 		.setHeader("Content-Type").constant("application/x-www-form-urlencoded")
 		.setBody(simple("payload=${in.body}"))
-		.to("http://localhost:8080/RestfullConsumer/InRoomDinning")
+		.to("http://localhost:8080/POSMockup/InRoomDining")
 		.when(simple("${in.body.tenant.outboundType} == '2'"))
 		.setBody(this.body())
 		.to("jms:orders")

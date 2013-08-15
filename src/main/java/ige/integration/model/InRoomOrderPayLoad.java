@@ -13,11 +13,9 @@ public class InRoomOrderPayLoad {
 	private Object objectPayload;
 	private TenantInfo tenant;
 	
-	public InRoomOrderPayLoad(String payload, Object objectPayload,
-			TenantInfo tenant) {
+	public InRoomOrderPayLoad(String payload,TenantInfo tenant) {
 		super();
 		this.payload = payload;
-		this.objectPayload = objectPayload;
 		this.tenant = tenant;
 	}
 	

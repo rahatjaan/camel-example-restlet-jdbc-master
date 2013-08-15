@@ -24,6 +24,10 @@
 		<property name="dataSource" ref="myDataSource" />
 
 	</bean>
+	<bean id="inRoomDiningProcessor" class="ige.integration.processes.InRoomDiningProcessor">
+		<property name="dataSource" ref="myDataSource" />
+
+	</bean>
 
 	<!-- <jdbc:embedded-database id="dataSource" type="HSQL"> <jdbc:script location="classpath:sql/init.sql"/> 
 		</jdbc:embedded-database> -->

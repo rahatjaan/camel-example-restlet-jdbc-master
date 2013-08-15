@@ -29,7 +29,7 @@ public class IntegrationProcessor implements Processor {
 	public InRoomOrderPayLoad populateTenantInfo(Exchange exchange){
 		String value = exchange.getIn().getBody().toString();
 		System.out.println("PopulateTenantInfo xml \n"+value);
-		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,exchange,getTenantInfo("test_guid"));
+		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,getTenantInfo("test_guid"));
 		System.out.println("PAYLOAD HERE IS: "+payload.getTenant().getTenantId());		
 		return payload;
 	}
