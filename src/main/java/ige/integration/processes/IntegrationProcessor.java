@@ -11,10 +11,6 @@ import javax.sql.DataSource;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.component.restlet.RestletConstants;
-import org.restlet.Response;
-import org.restlet.data.MediaType;
-import org.restlet.data.Status;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
