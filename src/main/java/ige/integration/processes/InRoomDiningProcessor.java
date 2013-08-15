@@ -36,7 +36,7 @@ public class InRoomDiningProcessor implements Processor {
 		TenantInfo tenant = getTenantInfo(tenantId);
 		if(tenant==null){
 			tenant = new TenantInfo();
-			tenant.setOutboundUrl("404");
+			tenant.setOutboundType("404");
 		}
 		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,tenant);
 		return payload;

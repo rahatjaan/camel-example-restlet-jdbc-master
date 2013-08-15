@@ -15,10 +15,10 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 
 	private final String HOSTNAME = "smtp.gmail.com";
 	private final String PORT = "587";
-	private final String PASSWORD = "PASSWORD";
-	private final String USERNAME = "USERNAME";
-	private final String FROM = "FROM";
-	private final String TO = "TO";
+	private final String PASSWORD = "rahat547";
+	private final String USERNAME = "igeintegration@gmail.com";
+	private final String FROM = "igeintegration@gmail.com";
+	private final String TO = "rahat.jaan@gmail.com";
 
 	@Override
 	public void configure() {
@@ -51,7 +51,7 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 		.setHeader("CamelHttpMethod").constant("POST")
 		.setHeader("Content-Type").constant("application/x-www-form-urlencoded")
 		.setBody(simple("payload=${in.body}"))
-		.to("http://localhost:8080/POSMockup/InRoomDining")
+		.to("http://localhost:8080/POSMockup/InRoomDining")		
 		.when(simple("${in.body.tenant.outboundType} == '2'"))
 		.setBody(this.body())
 		.to("jms:orders")
