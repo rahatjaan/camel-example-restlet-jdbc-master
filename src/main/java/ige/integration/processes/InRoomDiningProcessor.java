@@ -28,25 +28,29 @@ public class InRoomDiningProcessor implements Processor {
 	}
 
 	public InRoomOrderPayLoad populateTenantInfo(Exchange exchange) {
-		String value = exchange.getIn().getBody().toString();
-		String tenantId=XMLElementExtractor.extractXmlElementValue(value, "tenantId");
-		if(tenantId==null)
-			tenantId = "test_guid";
-		System.out.println("PopulateTenantInfo xml \n" + value+"\ntenantId:"+tenantId);
-		TenantInfo tenant = getTenantInfo(tenantId);
-		if(tenant==null){
-			tenant = new TenantInfo();
-			tenant.setOutboundType("404");
+		try{
+			String value = exchange.getIn().getBody().toString();
+			String tenantId=XMLElementExtractor.extractXmlElementValue(value, "tenantId");
+			if(tenantId==null)
+				tenantId = "test_guid";
+			System.out.println("PopulateTenantInfo xml \n" + value+"\ntenantId:"+tenantId);
+			TenantInfo tenant = getTenantInfo(tenantId);
+			if(tenant==null){
+				tenant = new TenantInfo();
+				tenant.setOutboundType("404");
+			}
+			InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,tenant);
+			return payload;
+		}catch(Exception e){
+			exchange.getOut().setBody(e.toString());
 		}
-		InRoomOrderPayLoad payload = new InRoomOrderPayLoad(value,tenant);
-		return payload;
+		return null;
 	}
 
-	public TenantInfo getTenantInfo(String tenantId) {
+	public TenantInfo getTenantInfo(String tenantId) throws Exception{
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 		String sql = "select * from tenant where tenant_guid='" + tenantId
 				+ "'";
-		try {
 			TenantInfo info = jdbc.query(sql,
 					new ResultSetExtractor<TenantInfo>() {
 
@@ -70,10 +74,6 @@ public class InRoomDiningProcessor implements Processor {
 						}
 					});
 			return info;
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public DataSource getDataSource() {

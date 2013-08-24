@@ -5,7 +5,7 @@ import org.apache.camel.Processor;
 
 public class ResponseProcessor implements Processor{
 	public void process(Exchange exchange) throws Exception {
-		exchange.getOut().setBody("Tenant is not found");
-		System.out.println("RESPONSE PROCESSOR: ");
+		exchange.getOut().setBody("Tenant not Found.");
+		System.out.println("RESPONSE PROCESSOR: "+exchange.getIn().getBody().toString());
     }
 }

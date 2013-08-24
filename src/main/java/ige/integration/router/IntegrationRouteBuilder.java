@@ -1,11 +1,16 @@
 package ige.integration.router;
 
+import ige.integration.exception.CustomExceptionProcessor;
+import ige.integration.processes.DynamicRouteProcessor;
 import ige.integration.processes.IntegrationProcessor;
 import ige.integration.processes.JMSProcessor;
 import ige.integration.processes.RestProcessor;
 import ige.integration.utils.DataBean;
 
+import java.io.IOException;
+
 import org.apache.camel.CamelContext;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
@@ -43,6 +48,7 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 
 	
 	private void igeInroomDiningFlow() {
+		onException(Exception.class,IOException.class).handled(true).process(new CustomExceptionProcessor());
 		from("restlet:/placeOrder?restletMethod=POST")
 		.unmarshal().xmljson()	
 		.beanRef("inRoomDiningProcessor")	
@@ -54,7 +60,9 @@ public class IntegrationRouteBuilder extends RouteBuilder {
 		.setHeader("CamelHttpMethod").constant("POST")
 		.setHeader("Content-Type").constant("application/x-www-form-urlencoded")
 		.setBody(simple("payload=${in.body}"))
-		.to("http://localhost:8080/POSMockup/InRoomDining")		
+		//.to("http://localhost:8080/POSMockup/InRoomDining")
+		.process(new DynamicRouteProcessor())
+		//.to("uri:"+simple("${in.body.tenant.outboundUrl}"))
 		.when(simple("${in.body.tenant.outboundType} == '2'"))
 		.setBody(this.body())
 		.to("jms:orders")
